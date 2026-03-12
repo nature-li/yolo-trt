@@ -1,6 +1,7 @@
 #include <chrono>
 #include <iostream>
 
+#include "benchmark.hpp"
 #include "detector.hpp"
 
 static const char* COCO_NAMES[] = {
@@ -32,7 +33,7 @@ static const char* COCO_NAMES[] = {
     "vase",          "scissors",     "teddy bear",
     "hair drier",    "toothbrush"};
 
-int main(int argc, char* argv[]) {
+int main1(int argc, char* argv[]) {
   if (argc < 3) {
     printf("Usage: %s <engine> <image>\n", argv[0]);
     return 1;
@@ -74,11 +75,30 @@ int main(int argc, char* argv[]) {
     const char* name = COCO_NAMES[d.class_id];
 
     cv::rectangle(img, {x1, y1}, {x2, y2}, {0, 255, 0}, 2);
+    cv::putText(img, name, {x1, y1 - 5}, cv::FONT_HERSHEY_SIMPLEX, 0.5,
+                {0, 255, 0}, 1);
     printf("  class_id=%d conf=%.2f box=[%d,%d,%d,%d] class_name=%s\n",
            d.class_id, d.conf, x1, y1, x2, y2, name);
   }
   cv::imwrite("result.jpg", img);
   printf("saved result.jpg");
 
+  return 0;
+}
+
+int main(int argc, char** argv) {
+  Detector det(argv[1]);
+  cv::Mat img = cv::imread(argv[2]);
+
+  // baseline benchmark
+  auto r = benchmark(det, img);
+  printBenchResult("baseline (CPU preprocess)", r);
+
+  // 顺便跑一次看检测结果
+  auto results = det.detect(img);
+  for (auto& d : results)
+    printf("  [%s] conf=%.2f\n", COCO_NAMES[d.class_id], d.conf);
+
+  cv::imwrite("result.jpg", img);
   return 0;
 }
