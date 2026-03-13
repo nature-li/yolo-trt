@@ -11,12 +11,12 @@ make -j
 [Detector] engine loaded: ../../yolov8n.engine
 
 [BENCH] baseline (CPU preprocess)
-  mean:   4.22 ms
-  median: 4.18 ms
-  min:    4.01 ms
-  max:    5.88 ms
-  p99:    5.62 ms
-  FPS:    236.7
+  mean:   4.30 ms
+  median: 4.21 ms
+  min:    4.00 ms
+  max:    7.64 ms
+  p99:    6.21 ms
+  FPS:    232.7
   [person] conf=0.89
   [person] conf=0.88
   [person] conf=0.88

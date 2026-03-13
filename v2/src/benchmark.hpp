@@ -20,7 +20,7 @@ struct BenchResult {
 };
 
 BenchResult benchmark(Detector& det, const cv::Mat& img, int warmup = 10,
-                      int runs = 200) {
+                      int runs = 1000) {
   // warm up，让 GPU 频率稳定
   for (int i = 0; i < warmup; i++) det.detect(img);
 
