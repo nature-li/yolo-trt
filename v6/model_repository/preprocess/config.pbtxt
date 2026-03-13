@@ -1,0 +1,36 @@
+name: "preprocess"
+backend: "python"
+max_batch_size: 0
+
+input [
+  {
+    name: "raw_image"
+    data_type: TYPE_UINT8
+    dims: [ -1 ]        # 压扁的原图字节流，shape=[N]
+  }
+]
+
+output [
+  {
+    name: "input_tensor"
+    data_type: TYPE_FP32
+    dims: [ 1, 3, 640, 640 ]
+  },
+  {
+    name: "scale"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  },
+  {
+    name: "pad_x"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  },
+  {
+    name: "pad_y"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  }
+]
+
+instance_group [{ kind: KIND_CPU }]

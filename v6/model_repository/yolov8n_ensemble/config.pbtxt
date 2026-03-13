@@ -1,0 +1,51 @@
+name: "yolov8n_ensemble"
+platform: "ensemble"
+max_batch_size: 0
+
+input [
+  {
+    name: "raw_image"
+    data_type: TYPE_UINT8
+    dims: [ -1 ]
+  }
+]
+
+output [
+  {
+    name: "detections"
+    data_type: TYPE_STRING
+    dims: [ 1 ]
+  }
+]
+
+ensemble_scheduling {
+  step [
+    # step 1: preprocess
+    {
+      model_name: "preprocess"
+      model_version: 1
+      input_map  { key: "raw_image"    value: "raw_image"    }
+      output_map { key: "input_tensor" value: "input_tensor" }
+      output_map { key: "scale"        value: "scale"        }
+      output_map { key: "pad_x"        value: "pad_x"        }
+      output_map { key: "pad_y"        value: "pad_y"        }
+    },
+    # step 2: TensorRT 推理
+    {
+      model_name: "yolov8n"
+      model_version: 1
+      input_map  { key: "images"  value: "input_tensor" }
+      output_map { key: "output0" value: "trt_output"   }
+    },
+    # step 3: postprocess
+    {
+      model_name: "postprocess"
+      model_version: 1
+      input_map  { key: "output0" value: "trt_output" }
+      input_map  { key: "scale"   value: "scale"      }
+      input_map  { key: "pad_x"   value: "pad_x"      }
+      input_map  { key: "pad_y"   value: "pad_y"      }
+      output_map { key: "detections" value: "detections" }
+    }
+  ]
+}

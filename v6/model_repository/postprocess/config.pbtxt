@@ -1,0 +1,36 @@
+name: "postprocess"
+backend: "python"
+max_batch_size: 0
+
+input [
+  {
+    name: "output0"
+    data_type: TYPE_FP32
+    dims: [ 1, 84, 8400 ]
+  },
+  {
+    name: "scale"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  },
+  {
+    name: "pad_x"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  },
+  {
+    name: "pad_y"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  }
+]
+
+output [
+  {
+    name: "detections"
+    data_type: TYPE_STRING
+    dims: [ 1 ]       # JSON 字符串
+  }
+]
+
+instance_group [{ kind: KIND_CPU }]
