@@ -1,0 +1,108 @@
+<svg width="680" height="580" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg" style="font-family: sans-serif; background: white;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- 泳道标签 -->
+  <text font-size="12" fill="#888" x="34" y="108" text-anchor="middle" dominant-baseline="central" transform="rotate(-90,34,108)">客户端</text>
+  <text font-size="12" fill="#888" x="34" y="250" text-anchor="middle" dominant-baseline="central" transform="rotate(-90,34,250)">Drogon IO</text>
+  <text font-size="12" fill="#888" x="34" y="390" text-anchor="middle" dominant-baseline="central" transform="rotate(-90,34,390)">推理线程</text>
+  <text font-size="12" fill="#888" x="34" y="510" text-anchor="middle" dominant-baseline="central" transform="rotate(-90,34,510)">GPU / CUDA</text>
+
+  <!-- 泳道分隔线 -->
+  <line x1="52" y1="55"  x2="648" y2="55"  stroke="#ddd" stroke-width="0.5" stroke-dasharray="4 4"/>
+  <line x1="52" y1="170" x2="648" y2="170" stroke="#ddd" stroke-width="0.5" stroke-dasharray="4 4"/>
+  <line x1="52" y1="320" x2="648" y2="320" stroke="#ddd" stroke-width="0.5" stroke-dasharray="4 4"/>
+  <line x1="52" y1="455" x2="648" y2="455" stroke="#ddd" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+  <!-- 客户端 -->
+  <rect x="60" y="68" width="148" height="44" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#2c2c2a" x="134" y="86" text-anchor="middle" dominant-baseline="central">POST /detect</text>
+  <text font-size="12" fill="#5f5e5a" x="134" y="102" text-anchor="middle" dominant-baseline="central">图片二进制</text>
+
+  <!-- client → DetectCtrl -->
+  <line x1="208" y1="90" x2="266" y2="90" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- DetectCtrl -->
+  <rect x="266" y="68" width="160" height="44" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#085041" x="346" y="86" text-anchor="middle" dominant-baseline="central">DetectCtrl</text>
+  <text font-size="12" fill="#0f6e56" x="346" y="102" text-anchor="middle" dominant-baseline="central">入队后立即返回</text>
+
+  <!-- DetectCtrl → 队列 -->
+  <line x1="346" y1="112" x2="346" y2="183" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- 请求队列 -->
+  <rect x="266" y="185" width="160" height="44" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#2c2c2a" x="346" y="203" text-anchor="middle" dominant-baseline="central">请求队列</text>
+  <text font-size="12" fill="#5f5e5a" x="346" y="219" text-anchor="middle" dominant-baseline="central">上限100，超限返回503</text>
+
+  <!-- 队列 → 推理线程 -->
+  <path d="M346 229 L346 357 L222 357" fill="none" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- 推理线程 -->
+  <rect x="60" y="335" width="160" height="44" rx="8" fill="#eeedfe" stroke="#534ab7" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#26215c" x="140" y="353" text-anchor="middle" dominant-baseline="central">推理线程 ×4</text>
+  <text font-size="12" fill="#534ab7" x="140" y="369" text-anchor="middle" dominant-baseline="central">提交即取下一张</text>
+
+  <!-- Context Pool -->
+  <rect x="266" y="335" width="160" height="44" rx="8" fill="#eeedfe" stroke="#534ab7" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#26215c" x="346" y="353" text-anchor="middle" dominant-baseline="central">Context Pool</text>
+  <text font-size="12" fill="#534ab7" x="346" y="369" text-anchor="middle" dominant-baseline="central">动态扩容，上限64</text>
+
+  <!-- 推理线程 ↔ pool -->
+  <line x1="222" y1="350" x2="264" y2="350" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="264" y1="364" x2="222" y2="364" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+  <text font-size="12" fill="#888" x="243" y="344" text-anchor="middle">获取</text>
+  <text font-size="12" fill="#888" x="243" y="378" text-anchor="middle">归还</text>
+
+  <!-- 推理线程 → H2D -->
+  <path d="M140 379 L140 466" fill="none" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+  <text font-size="12" fill="#888" x="152" y="424" text-anchor="start">提交stream</text>
+
+  <!-- GPU: H2D -->
+  <rect x="60" y="468" width="104" height="44" rx="8" fill="#faeeda" stroke="#ba7517" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#412402" x="112" y="486" text-anchor="middle" dominant-baseline="central">H2D</text>
+  <text font-size="12" fill="#854f0b" x="112" y="502" text-anchor="middle" dominant-baseline="central">原图传显存</text>
+
+  <!-- GPU: 预处理 -->
+  <rect x="184" y="468" width="112" height="44" rx="8" fill="#faeeda" stroke="#ba7517" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#412402" x="240" y="486" text-anchor="middle" dominant-baseline="central">预处理</text>
+  <text font-size="12" fill="#854f0b" x="240" y="502" text-anchor="middle" dominant-baseline="central">letterbox CUDA</text>
+
+  <!-- GPU: TRT推理 -->
+  <rect x="316" y="468" width="112" height="44" rx="8" fill="#faece7" stroke="#993c1d" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#4a1b0c" x="372" y="486" text-anchor="middle" dominant-baseline="central">TRT 推理</text>
+  <text font-size="12" fill="#993c1d" x="372" y="502" text-anchor="middle" dominant-baseline="central">FP16 engine</text>
+
+  <!-- GPU: 解码 -->
+  <rect x="448" y="468" width="112" height="44" rx="8" fill="#faeeda" stroke="#ba7517" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#412402" x="504" y="486" text-anchor="middle" dominant-baseline="central">解码</text>
+  <text font-size="12" fill="#854f0b" x="504" y="502" text-anchor="middle" dominant-baseline="central">GPU decode核</text>
+
+  <!-- GPU 内部箭头 -->
+  <line x1="164" y1="490" x2="182" y2="490" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="296" y1="490" x2="314" y2="490" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="428" y1="490" x2="446" y2="490" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- StreamCallback -->
+  <rect x="456" y="335" width="164" height="44" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#2c2c2a" x="538" y="353" text-anchor="middle" dominant-baseline="central">StreamCallback</text>
+  <text font-size="12" fill="#5f5e5a" x="538" y="369" text-anchor="middle" dominant-baseline="central">D2H → CPU NMS</text>
+
+  <!-- 解码 → 回调 -->
+  <path d="M504 468 L504 380" fill="none" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- HTTP 响应 -->
+  <rect x="456" y="185" width="164" height="44" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+  <text font-size="14" font-weight="500" fill="#085041" x="538" y="203" text-anchor="middle" dominant-baseline="central">HTTP 响应</text>
+  <text font-size="12" fill="#0f6e56" x="538" y="219" text-anchor="middle" dominant-baseline="central">JSON 检测结果</text>
+
+  <!-- 回调 → 响应 -->
+  <path d="M538 333 L538 231" fill="none" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+  <text font-size="12" fill="#888" x="550" y="285" text-anchor="start">callback()</text>
+
+  <!-- 响应 → 客户端 -->
+  <path d="M538 185 L538 90 L428 90" fill="none" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+</svg>
