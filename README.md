@@ -7,11 +7,14 @@ python step_1_verify_model.py
 # 第三步: 转成 egnine
 bash step_2_onnx_to_engine.sh
 
-# 第四步： 编译代码
+# 第四步： 进入指定版本
+cd v1
+
+# 第五步: 编译
 mkdir -p build
 cd build
 cmake ..
 make -j
 
-# 第五步： 运行测试
-./yolo_infer ../yolov8n.engine ../image.jpg
+# 第六步： 性能测试
+./yolo_infer ../../yolov8n.engine ../../image.jpg
